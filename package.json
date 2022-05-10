@@ -1,0 +1,33 @@
+{
+  "name": "wm-apigw-config-sdk",
+  "version": "1.0.0",
+  "description": "An SDK that wraps administration and configuration APIs for webMethods API Gateway into a nodejs package.",
+  "main": "index.js",
+  "scripts": {
+    "lint": "eslint **.js",
+    "test": "jest --coverage --verbose",
+    "all": "npm run lint && npm test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jiridj/wm-apigw-config-sdk.git"
+  },
+  "keywords": [
+    "webMethods",
+    "API Gateway"
+  ],
+  "author": "Jiri De Jagere <jiridj@gmail.com> (https://jiridj.be/)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/jiridj/wm-apigw-config-sdk/issues"
+  },
+  "homepage": "https://github.com/jiridj/wm-apigw-config-sdk#readme",
+  "dependencies": {
+    "axios": "^0.27.2",
+    "moment": "^2.29.3",
+    "winston": "^3.7.2"
+  },
+  "devDependencies": {
+    "jest": "^28.1.0"
+  }
+}

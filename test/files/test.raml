@@ -1,0 +1,645 @@
+#%RAML 1.0
+title: Swagger Petstore RAML
+description: 'This is a sample server Petstore server.  You can find out more about Swagger at [http://swagger.io](http://swagger.io) or on [irc.freenode.net, #swagger](http://swagger.io/irc/).  For this sample, you can use the api key `special-key` to test the authorization filters.'
+version: 1.0.6
+(oas-info):
+  termsOfService: 'http://swagger.io/terms/'
+  contact:
+    email: apiteam@swagger.io
+  license:
+    name: Apache 2.0
+    url: 'http://www.apache.org/licenses/LICENSE-2.0.html'
+annotationTypes:
+  oas-info:
+    properties:
+      termsOfService?: string
+      contact?:
+        properties:
+          name?: string
+          url?: string
+          email?: string
+      license?:
+        properties:
+          name?: string
+          url?: string
+    allowedTargets: API
+  oas-tags-definition:
+    allowedTargets: API
+    type: array
+    items:
+      properties:
+        name: string
+        description?: string
+        externalDocs?:
+          properties:
+            url: string
+            description?: string
+  oas-externalDocs:
+    properties:
+      description?: string
+      url: string
+    allowedTargets:
+      - API
+      - Method
+      - TypeDeclaration
+  oas-body-name:
+    type: string
+    allowedTargets: TypeDeclaration
+  oas-summary:
+    type: string
+    allowedTargets: Method
+  oas-tags:
+    type: 'string[]'
+    allowedTargets: Method
+  oas-collectionFormat:
+    type: string
+  oas-deprecated:
+    type: boolean
+    allowedTargets: Method
+  oas-responses-default:
+    type: any
+    allowedTargets: Method
+(oas-tags-definition):
+  - name: pet
+    description: Everything about your Pets
+    externalDocs:
+      description: Find out more
+      url: 'http://swagger.io'
+  - name: store
+    description: Access to Petstore orders
+  - name: user
+    description: Operations about user
+    externalDocs:
+      description: Find out more about our store
+      url: 'http://swagger.io'
+protocols:
+  - HTTPS
+  - HTTP
+baseUri: 'https://petstore.swagger.io/v2'
+(oas-externalDocs):
+  url: 'http://swagger.io'
+  description: Find out more about Swagger
+securitySchemes:
+  api_key:
+    type: Pass Through
+    describedBy:
+      headers:
+        api_key:
+          type: string
+  petstore_auth:
+    type: OAuth 2.0
+    settings:
+      authorizationUri: 'https://petstore.swagger.io/oauth/authorize'
+      accessTokenUri: ''
+      authorizationGrants:
+        - implicit
+      scopes:
+        - 'read:pets'
+        - 'write:pets'
+types:
+  ApiResponse:
+    type: object
+    properties:
+      code:
+        type: integer
+        format: int32
+      type:
+        type: string
+      message:
+        type: string
+  Category:
+    xml:
+      name: Category
+    type: object
+    properties:
+      id:
+        type: integer
+        format: int64
+      name:
+        type: string
+  Pet:
+    xml:
+      name: Pet
+    type: object
+    properties:
+      id:
+        type: integer
+        format: int64
+        required: false
+      category:
+        type: Category
+        required: false
+      name:
+        example: doggie
+        type: string
+      photoUrls:
+        xml:
+          wrapped: true
+        type: array
+        items:
+          xml:
+            name: photoUrl
+          type: string
+      tags:
+        xml:
+          wrapped: true
+        type: array
+        items:
+          xml:
+            name: tag
+          type: Tag
+        required: false
+      status:
+        description: pet status in the store
+        type: string
+        enum:
+          - available
+          - pending
+          - sold
+        required: false
+  Tag:
+    xml:
+      name: Tag
+    type: object
+    properties:
+      id:
+        type: integer
+        format: int64
+      name:
+        type: string
+  Order:
+    xml:
+      name: Order
+    type: object
+    properties:
+      id:
+        type: integer
+        format: int64
+      petId:
+        type: integer
+        format: int64
+      quantity:
+        type: integer
+        format: int32
+      shipDate:
+        type: datetime
+      status:
+        description: Order Status
+        type: string
+        enum:
+          - placed
+          - approved
+          - delivered
+      complete:
+        type: boolean
+  User:
+    xml:
+      name: User
+    type: object
+    properties:
+      id:
+        type: integer
+        format: int64
+      username:
+        type: string
+      firstName:
+        type: string
+      lastName:
+        type: string
+      email:
+        type: string
+      password:
+        type: string
+      phone:
+        type: string
+      userStatus:
+        description: User Status
+        type: integer
+        format: int32
+/pet:
+  post:
+    displayName: addPet
+    responses:
+      '405':
+        description: Invalid input
+    body:
+      application/json:
+        description: Pet object that needs to be added to the store
+        type: Pet
+        (oas-body-name): body
+      application/xml:
+        description: Pet object that needs to be added to the store
+        type: Pet
+        (oas-body-name): body
+    securedBy:
+      - petstore_auth:
+          scopes:
+            - 'write:pets'
+            - 'read:pets'
+    (oas-summary): Add a new pet to the store
+    (oas-tags):
+      - pet
+  put:
+    displayName: updatePet
+    responses:
+      '400':
+        description: Invalid ID supplied
+      '404':
+        description: Pet not found
+      '405':
+        description: Validation exception
+    body:
+      application/json:
+        description: Pet object that needs to be added to the store
+        type: Pet
+        (oas-body-name): body
+      application/xml:
+        description: Pet object that needs to be added to the store
+        type: Pet
+        (oas-body-name): body
+    securedBy:
+      - petstore_auth:
+          scopes:
+            - 'write:pets'
+            - 'read:pets'
+    (oas-summary): Update an existing pet
+    (oas-tags):
+      - pet
+  /findByStatus:
+    get:
+      description: Multiple status values can be provided with comma separated strings
+      displayName: findPetsByStatus
+      responses:
+        '200':
+          description: successful operation
+          body:
+            application/json:
+              type: array
+              items:
+                type: Pet
+            application/xml:
+              type: array
+              items:
+                type: Pet
+        '400':
+          description: Invalid status value
+      queryParameters:
+        status:
+          description: Status values that need to be considered for filter
+          type: array
+          items:
+            default: available
+            type: string
+            enum:
+              - available
+              - pending
+              - sold
+          (oas-collectionFormat): multi
+      securedBy:
+        - petstore_auth:
+            scopes:
+              - 'write:pets'
+              - 'read:pets'
+      (oas-summary): Finds Pets by status
+      (oas-tags):
+        - pet
+  /findByTags:
+    get:
+      description: 'Multiple tags can be provided with comma separated strings. Use tag1, tag2, tag3 for testing.'
+      displayName: findPetsByTags
+      responses:
+        '200':
+          description: successful operation
+          body:
+            application/json:
+              type: array
+              items:
+                type: Pet
+            application/xml:
+              type: array
+              items:
+                type: Pet
+        '400':
+          description: Invalid tag value
+      queryParameters:
+        tags:
+          description: Tags to filter by
+          type: array
+          items:
+            type: string
+          (oas-collectionFormat): multi
+      securedBy:
+        - petstore_auth:
+            scopes:
+              - 'write:pets'
+              - 'read:pets'
+      (oas-summary): Finds Pets by tags
+      (oas-tags):
+        - pet
+      (oas-deprecated): true
+  '/{petId}':
+    get:
+      description: Returns a single pet
+      displayName: getPetById
+      responses:
+        '200':
+          description: successful operation
+          body:
+            application/json:
+              type: Pet
+            application/xml:
+              type: Pet
+        '400':
+          description: Invalid ID supplied
+        '404':
+          description: Pet not found
+      securedBy:
+        - api_key
+      (oas-summary): Find pet by ID
+      (oas-tags):
+        - pet
+    post:
+      displayName: updatePetWithForm
+      responses:
+        '405':
+          description: Invalid input
+      body:
+        application/x-www-form-urlencoded:
+          properties:
+            name:
+              description: Updated name of the pet
+              required: false
+              type: string
+            status:
+              description: Updated status of the pet
+              required: false
+              type: string
+      securedBy:
+        - petstore_auth:
+            scopes:
+              - 'write:pets'
+              - 'read:pets'
+      (oas-summary): Updates a pet in the store with form data
+      (oas-tags):
+        - pet
+    delete:
+      displayName: deletePet
+      responses:
+        '400':
+          description: Invalid ID supplied
+        '404':
+          description: Pet not found
+      headers:
+        api_key:
+          required: false
+          type: string
+      securedBy:
+        - petstore_auth:
+            scopes:
+              - 'write:pets'
+              - 'read:pets'
+      (oas-summary): Deletes a pet
+      (oas-tags):
+        - pet
+    uriParameters:
+      petId:
+        description: Pet id to delete
+        type: integer
+        format: int64
+    /uploadImage:
+      post:
+        displayName: uploadFile
+        responses:
+          '200':
+            description: successful operation
+            body:
+              application/json:
+                type: ApiResponse
+        body:
+          multipart/form-data:
+            properties:
+              additionalMetadata:
+                description: Additional data to pass to server
+                required: false
+                type: string
+              file:
+                description: file to upload
+                required: false
+                type: file
+        securedBy:
+          - petstore_auth:
+              scopes:
+                - 'write:pets'
+                - 'read:pets'
+        (oas-summary): uploads an image
+        (oas-tags):
+          - pet
+/store:
+  /inventory:
+    get:
+      description: Returns a map of status codes to quantities
+      displayName: getInventory
+      responses:
+        '200':
+          description: successful operation
+          body:
+            application/json:
+              type: object
+              properties:
+                //:
+                  type: integer
+                  format: int32
+      securedBy:
+        - api_key
+      (oas-summary): Returns pet inventories by status
+      (oas-tags):
+        - store
+  /order:
+    post:
+      displayName: placeOrder
+      responses:
+        '200':
+          description: successful operation
+          body:
+            application/json:
+              type: Order
+            application/xml:
+              type: Order
+        '400':
+          description: Invalid Order
+      body:
+        application/json:
+          description: order placed for purchasing the pet
+          type: Order
+          (oas-body-name): body
+      (oas-summary): Place an order for a pet
+      (oas-tags):
+        - store
+    '/{orderId}':
+      get:
+        description: For valid response try integer IDs with value >= 1 and <= 10. Other values will generated exceptions
+        displayName: getOrderById
+        responses:
+          '200':
+            description: successful operation
+            body:
+              application/json:
+                type: Order
+              application/xml:
+                type: Order
+          '400':
+            description: Invalid ID supplied
+          '404':
+            description: Order not found
+        (oas-summary): Find purchase order by ID
+        (oas-tags):
+          - store
+      delete:
+        description: For valid response try integer IDs with positive integer value. Negative or non-integer values will generate API errors
+        displayName: deleteOrder
+        responses:
+          '400':
+            description: Invalid ID supplied
+          '404':
+            description: Order not found
+        (oas-summary): Delete purchase order by ID
+        (oas-tags):
+          - store
+      uriParameters:
+        orderId:
+          description: ID of the order that needs to be deleted
+          minimum: 1
+          type: integer
+          format: int64
+/user:
+  post:
+    description: This can only be done by the logged in user.
+    displayName: createUser
+    (oas-responses-default):
+      description: successful operation
+    body:
+      application/json:
+        description: Created user object
+        type: User
+        (oas-body-name): body
+    (oas-summary): Create user
+    (oas-tags):
+      - user
+  /createWithArray:
+    post:
+      displayName: createUsersWithArrayInput
+      (oas-responses-default):
+        description: successful operation
+      body:
+        application/json:
+          description: List of user object
+          type: array
+          items:
+            type: User
+          (oas-body-name): body
+      (oas-summary): Creates list of users with given input array
+      (oas-tags):
+        - user
+  /createWithList:
+    post:
+      displayName: createUsersWithListInput
+      (oas-responses-default):
+        description: successful operation
+      body:
+        application/json:
+          description: List of user object
+          type: array
+          items:
+            type: User
+          (oas-body-name): body
+      (oas-summary): Creates list of users with given input array
+      (oas-tags):
+        - user
+  /login:
+    get:
+      displayName: loginUser
+      responses:
+        '200':
+          description: successful operation
+          headers:
+            X-Expires-After:
+              description: date in UTC when token expires
+              type: datetime
+            X-Rate-Limit:
+              description: calls per hour allowed by the user
+              type: integer
+              format: int32
+          body:
+            application/json:
+              type: string
+            application/xml:
+              type: string
+        '400':
+          description: Invalid username/password supplied
+      queryParameters:
+        username:
+          description: The user name for login
+          type: string
+        password:
+          description: The password for login in clear text
+          type: string
+      (oas-summary): Logs user into the system
+      (oas-tags):
+        - user
+  /logout:
+    get:
+      displayName: logoutUser
+      (oas-responses-default):
+        description: successful operation
+      (oas-summary): Logs out current logged in user session
+      (oas-tags):
+        - user
+  '/{username}':
+    get:
+      displayName: getUserByName
+      responses:
+        '200':
+          description: successful operation
+          body:
+            application/json:
+              type: User
+            application/xml:
+              type: User
+        '400':
+          description: Invalid username supplied
+        '404':
+          description: User not found
+      (oas-summary): Get user by user name
+      (oas-tags):
+        - user
+    put:
+      description: This can only be done by the logged in user.
+      displayName: updateUser
+      responses:
+        '400':
+          description: Invalid user supplied
+        '404':
+          description: User not found
+      body:
+        application/json:
+          description: Updated user object
+          type: User
+          (oas-body-name): body
+      (oas-summary): Updated user
+      (oas-tags):
+        - user
+    delete:
+      description: This can only be done by the logged in user.
+      displayName: deleteUser
+      responses:
+        '400':
+          description: Invalid username supplied
+        '404':
+          description: User not found
+      (oas-summary): Delete user
+      (oas-tags):
+        - user
+    uriParameters:
+      username:
+        description: The name that needs to be deleted
+        type: string
