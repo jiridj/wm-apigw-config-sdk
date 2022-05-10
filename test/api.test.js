@@ -13,6 +13,9 @@ const oneData = JSON.parse(fs.readFileSync('test/files/api-success.json'));
 const one = { status: 200, data: oneData };
 const apiId = oneData.apiResponse.api.id;
 
+const deletedData = JSON.parse(fs.readFileSync('test/files/api-delete-success.json'));
+const deleted = { status: 200, data: deletedData };
+
 const notFoundData = JSON.parse(fs.readFileSync('test/files/api-notfound-error.json'));
 const notFound = { status: 404, data: notFoundData };
 
@@ -25,11 +28,19 @@ const badRequest = { status: 401, data: badRequestData };
 const inactiveData = JSON.parse(fs.readFileSync('test/files/api-inactive-error.json'));
 const inactive = { status: 500, data: inactiveData };
 
+beforeAll(() => {
+    auth.setup(
+        'http://localhost:5555',
+        'username',
+        'password'
+    );
+});
+
 describe('test activateApi', () => {
 
     it('should activate', async () => {
         mockedAxios.put.mockResolvedValueOnce(one);
-
+        console.log('testing =============================');
         const result = await api.activateApi(apiId, false);
         expect(result).not.toBeNull();
     });
@@ -136,6 +147,29 @@ describe('test deactivateApi', () => {
 
 });
 
+describe('test deleteApi', () => {
+    
+    test('should succeed', async () => {
+        mockedAxios.delete.mockResolvedValueOnce(deleted);
+        expect(await api.deleteApi(apiId, false)).toBeTruthy();
+    });
+
+    test('should fail with not found', async () => {
+        mockedAxios.delete.mockRejectedValueOnce(notFound);
+        try { 
+            await api.deleteApi(apiId, false);
+
+            // we should never get here
+            expect(false).toBeTruthy();
+        }
+        catch(error) {
+            expect(error).toBe(`Failed to delete the API with ID ${apiId}!`);
+        }
+
+    });
+
+});
+
 describe('test findApiById', () => {
 
     it('should succeed', async () => {
@@ -163,14 +197,6 @@ describe('test findApiById', () => {
 });
 
 describe('test findApiByNameAndVersion', () => {
-
-    beforeAll(() => {
-        auth.setup(
-            'http://localhost:5555',
-            'username',
-            'password'
-        );
-    });
 
     it('should return one API version', async () => {
         mockedAxios.get.mockResolvedValueOnce(all);
