@@ -8,7 +8,7 @@ describe('test authentication', () => {
             'username',
             'password'
             );
-    })
+    });
 
     it('should return the gateway REST endpoint', () => {
         expect(auth.getGwUrl()).toEqual('http://localhost:5555/rest/apigateway');
@@ -21,12 +21,12 @@ describe('test authentication', () => {
 
     it('should throw gateway connection exception', () => {
         auth.reset();
-        expect(() => { auth.getGwUrl() }).toThrow('Gateway connection was not set up!');
+        expect(() => { auth.getGwUrl(); }).toThrow('Gateway connection was not set up!');
     });
 
     it('should throw credentials exception', () => {
         auth.reset();
-        expect(() => { auth.getGwAuth() }).toThrow('Gateway authentication was not set up!');
+        expect(() => { auth.getGwAuth(); }).toThrow('Gateway authentication was not set up!');
     });
 
 });

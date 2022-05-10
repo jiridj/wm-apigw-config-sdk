@@ -27,8 +27,6 @@ const inactive = { status: 500, data: inactiveData };
 
 describe('test activateApi', () => {
 
-    // TODO: implement tests
-
     it('should activate', async () => {
         mockedAxios.put.mockResolvedValueOnce(one);
 

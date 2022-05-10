@@ -66,14 +66,22 @@ describe('test getFile', () => {
 
 describe('test isValidUrl', () => {
 
-    it('should be a valid url', () => {
+    it('should succeed', async () => {
         const url = 'https://petstore3.swagger.io/api/v3/openapi.json';
-        expect(util.isValidUrl(url)).toBeTruthy();
+        const result = await util.isValidUrl(url);
+        expect(result).toBeTruthy();
     });
 
-    it('should be an invalid url', () => {
+    it('should fail with an invalid url format', async () => {
         const url = 'wrong://invalidurl.json';
-        expect(util.isValidUrl(url)).toBeFalsy();
+        const result = await util.isValidUrl(url);
+        expect(result).toBeFalsy();
+    });
+
+    it('should fail with a non-existent url', async () => {
+        const url = 'https://invalidurl.json';
+        const result = await util.isValidUrl(url);
+        expect(result).toBeFalsy();
     });
 
 });
