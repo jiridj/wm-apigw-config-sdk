@@ -36,11 +36,15 @@ beforeAll(() => {
     );
 });
 
+afterAll(() => {
+    auth.reset();
+});
+
 describe('test activateApi', () => {
 
     it('should activate', async () => {
         mockedAxios.put.mockResolvedValueOnce(one);
-        console.log('testing =============================');
+    
         const result = await api.activateApi(apiId, false);
         expect(result).not.toBeNull();
     });

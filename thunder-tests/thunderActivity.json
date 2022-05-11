@@ -1,0 +1,158 @@
+[
+  {
+    "_id": "f3a7a479-353b-474c-b2db-ca959be47bb2",
+    "colId": "history",
+    "containerId": "",
+    "name": "All stages",
+    "url": "http://localhost:5555/rest/apigateway/stages",
+    "method": "GET",
+    "sortNum": 0,
+    "created": "2022-05-11T10:05:00.659Z",
+    "modified": "2022-05-11T10:06:21.924Z",
+    "headers": [
+      {
+        "name": "Accept",
+        "value": "application/json"
+      }
+    ],
+    "params": [],
+    "auth": {
+      "type": "basic",
+      "basic": {
+        "username": "Administrator",
+        "password": "manage"
+      }
+    },
+    "tests": []
+  },
+  {
+    "_id": "4924cae8-319b-4276-8410-1044302fc917",
+    "colId": "history",
+    "containerId": "",
+    "name": "All apis",
+    "url": "http://localhost:5555/rest/apigateway/apis",
+    "method": "GET",
+    "sortNum": 0,
+    "created": "2022-05-11T10:05:00.659Z",
+    "modified": "2022-05-11T10:06:38.352Z",
+    "headers": [
+      {
+        "name": "Accept",
+        "value": "application/json"
+      }
+    ],
+    "params": [],
+    "auth": {
+      "type": "basic",
+      "basic": {
+        "username": "Administrator",
+        "password": "manage"
+      }
+    },
+    "tests": []
+  },
+  {
+    "_id": "b78dca18-9e58-4c9a-8434-bba57e08136f",
+    "colId": "history",
+    "containerId": "",
+    "name": "Create promotion",
+    "url": "http://localhost:5555/rest/apigateway/promotion?overwrite=true&overwriteAlias=true&fixMissingVersions=true",
+    "method": "POST",
+    "sortNum": 0,
+    "created": "2022-05-11T10:08:18.659Z",
+    "modified": "2022-05-11T10:14:28.632Z",
+    "headers": [
+      {
+        "name": "Accept",
+        "value": "application/json"
+      }
+    ],
+    "params": [
+      {
+        "name": "overwrite",
+        "value": "true",
+        "isPath": false
+      },
+      {
+        "name": "overwriteAlias",
+        "value": "true",
+        "isPath": false
+      },
+      {
+        "name": "fixMissingVersions",
+        "value": "true",
+        "isPath": false
+      }
+    ],
+    "body": {
+      "type": "json",
+      "raw": "{\n\t\"description\": \"test promotion\",\n\t\"name\": \"test promotion 2\",\n\t\"destinationStages\": [\n      \"1bb8104d-10cc-4eb7-815d-16866ddfd085\"\n    ],\n    \"promotedAssets\": {\n      \"api\": [\n        \"1bb8104d-10cc-4eb7-815d-16866ddfd085\"\n      ]\n    }\n}",
+      "form": []
+    },
+    "auth": {
+      "type": "basic",
+      "basic": {
+        "username": "Administrator",
+        "password": "manage"
+      }
+    },
+    "tests": []
+  },
+  {
+    "_id": "7c4930ee-dc85-463c-9980-fd0065d9e4ae",
+    "colId": "history",
+    "containerId": "",
+    "name": "All promotions",
+    "url": "http://localhost:5555/rest/apigateway/promotion",
+    "method": "POST",
+    "sortNum": 0,
+    "created": "2022-05-11T10:08:18.659Z",
+    "modified": "2022-05-11T10:08:30.426Z",
+    "headers": [
+      {
+        "name": "Accept",
+        "value": "application/json"
+      }
+    ],
+    "params": [],
+    "body": {
+      "type": "json",
+      "raw": "{\r\n\t\"description\": \"test promotion\",\r\n\t\"name\": \"test promotion\",\r\n\t\"destinationStages\": [\r\n\t\t\"1bb8104d-10cc-4eb7-815d-16866ddfd085\"\r\n\t],\r\n\t\"promotedAssets\": {\r\n\t\t\"api\": [\r\n\t\t\t\"1bb8104d-10cc-4eb7-815d-16866ddfd085\"\r\n        ]\r\n\t}\r\n}",
+      "form": []
+    },
+    "auth": {
+      "type": "basic",
+      "basic": {
+        "username": "Administrator",
+        "password": "manage"
+      }
+    },
+    "tests": []
+  },
+  {
+    "_id": "120a2b19-f21f-47aa-a0df-302eaef9c0d3",
+    "colId": "history",
+    "containerId": "",
+    "name": "All promotions",
+    "url": "http://localhost:5555/rest/apigateway/promotion",
+    "method": "GET",
+    "sortNum": 0,
+    "created": "2022-05-11T10:11:22.443Z",
+    "modified": "2022-05-11T10:13:39.584Z",
+    "headers": [
+      {
+        "name": "Accept",
+        "value": "application/json"
+      }
+    ],
+    "params": [],
+    "auth": {
+      "type": "basic",
+      "basic": {
+        "username": "Administrator",
+        "password": "manage"
+      }
+    },
+    "tests": []
+  }
+]

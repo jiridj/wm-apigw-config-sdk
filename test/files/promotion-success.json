@@ -1,0 +1,72 @@
+{
+  "promotion": {
+    "id": "f7795393-f0b5-4840-93c1-5a10abf69847",
+    "name": "test promotion",
+    "destinationStages": [
+      "1bb8104d-10cc-4eb7-815d-16866ddfd085"
+    ],
+    "valueSubstitution": [],
+    "promotedAssets": {
+      "api": [
+        "ebd55f19-7244-452b-9068-6fc114cb9a53"
+      ]
+    },
+    "creationTime": "2022-05-11 10:13:05 GMT",
+    "owner": "Administrator",
+    "status": "Success",
+    "promotionResults": {
+      "production": {
+        "status": "Success",
+        "ArchiveResult": [
+          {
+            "API": {
+              "name": "Swagger Petstore[1.0.6]",
+              "id": "ebd55f19-7244-452b-9068-6fc114cb9a53",
+              "status": "Success",
+              "explanation": "OK",
+              "overwritten": false,
+              "dependencyFailed": null,
+              "warning": false
+            }
+          },
+          {
+            "PolicyAction": {
+              "name": "Policy Action [Enable HTTP / HTTPS] -> Policy For API Swagger Petstore[1.0.6]",
+              "id": "0ac5c8af-4aea-43d6-877b-05ee6937bc5c",
+              "status": "Success",
+              "explanation": "OK",
+              "overwritten": false,
+              "dependencyFailed": null,
+              "warning": false
+            }
+          },
+          {
+            "Policy": {
+              "name": "Policy For API Swagger Petstore[1.0.6]",
+              "id": "ee272e51-e806-4974-bea1-42704c8b6c90",
+              "status": "Success",
+              "explanation": "OK",
+              "overwritten": false,
+              "dependencyFailed": null,
+              "warning": false
+            }
+          },
+          {
+            "PolicyAction": {
+              "name": "Policy Action [Straight Through Routing] -> Policy For API Swagger Petstore[1.0.6]",
+              "id": "41ea683b-4cc5-43d1-a81b-0bb2644201bb",
+              "status": "Success",
+              "explanation": "OK",
+              "overwritten": false,
+              "dependencyFailed": null,
+              "warning": false
+            }
+          }
+        ]
+      }
+    },
+    "includeApis": false,
+    "includeApplications": false,
+    "includeSubscriptions": false
+  }
+}
