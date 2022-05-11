@@ -222,11 +222,18 @@ describe('test findApiByNameAndVersion', () => {
         expect(result[1].api.apiVersion).toEqual('1.0.12');
     });
 
-    it('should return no APIs', async () => {
+    it('should fail because API was not found', async () => {
         mockedAxios.get.mockResolvedValueOnce(all);
-        const result = await api.findApiByNameAndVersion('Does not exist');
+        
+        try {
+            await api.findApiByNameAndVersion('Does not exist');
 
-        expect(result.length).toEqual(0);
+            // we should never get here
+            expect(false).toBeTruthy();
+        }
+        catch(error) {
+            expect(error).toBe('Failed to find an API with name Does not exist!');
+        }
     });
 
     it('should fail because of authentication error', async () => {
