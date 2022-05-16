@@ -9,7 +9,7 @@ on:
       - main
 
 jobs:
-  npm-checks: 
+  test: 
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -26,3 +26,8 @@ jobs:
         run: npm run lint
       - name: run tests
         run: npm test
+      - name: upload coverage
+        uses: codecov/codecov-action@v2
+        with:
+          fail_ci_if_error: true
+    
