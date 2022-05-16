@@ -1,0 +1,9 @@
+{
+    "id": "cb25a844-bc91-4da6-a808-2453572fd844",
+    "name": "production",
+    "url": "http://localhost:5555",
+    "username": "Administrator",
+    "password": "********************************",
+    "keystoreAlias": "DEFAULT_IS_KEYSTORE",
+    "keyAlias": "ssos"
+}

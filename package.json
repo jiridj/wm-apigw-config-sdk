@@ -1,5 +1,5 @@
 {
-  "name": "wm-apigw-config-sdk",
+  "name": "@jiridj/wm-apigw-config-sdk",
   "version": "1.0.0",
   "description": "An SDK that wraps administration and configuration APIs for webMethods API Gateway into a nodejs package.",
   "main": "index.js",
@@ -28,6 +28,7 @@
     "winston": "^3.7.2"
   },
   "devDependencies": {
+    "eslint": "^8.15.0",
     "jest": "^28.1.0"
   }
 }

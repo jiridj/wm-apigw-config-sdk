@@ -13,6 +13,9 @@ const oneData = JSON.parse(fs.readFileSync('test/files/api-success.json'));
 const one = { status: 200, data: oneData };
 const apiId = oneData.apiResponse.api.id;
 
+const versionData = JSON.parse(fs.readFileSync('test/files/versions-success.json'));
+const versions = { status: 200, data: versionData };
+
 const deletedData = JSON.parse(fs.readFileSync('test/files/api-delete-success.json'));
 const deleted = { status: 200, data: deletedData };
 
@@ -104,6 +107,19 @@ describe('test createApi', () => {
 
 });
 
+describe('test createApiVersion', () => {
+
+    it('should succeed', async () => {
+        mockedAxios.get.mockResolvedValueOnce(versions);
+        mockedAxios.post.mockResolvedValueOnce(one);
+
+        const result = await api.createApiVersion(versionData.apiResponse[1].api.id, '1.0.13');
+        expect(result).not.toBeNull();
+        expect(result).toEqual(oneData.apiResponse.api);
+    });
+
+});
+
 describe('test deactivateApi', () => {
 
     it('should deactivate', async () => {
@@ -170,6 +186,17 @@ describe('test deleteApi', () => {
             expect(error).toBe(`Failed to delete the API with ID ${apiId}!`);
         }
 
+    });
+
+});
+
+describe('test getApiVersions', () => {
+
+    it('should succeed', async () => {
+        mockedAxios.get.mockResolvedValueOnce(versions);
+        
+        const result = await api.getApiVersions(apiId);
+        expect(result.length).toBe(2);
     });
 
 });

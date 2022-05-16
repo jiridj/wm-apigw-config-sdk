@@ -1,9 +1,7 @@
-const api = require('../lib/api');
-const auth = require('../lib/auth');
 const fs = require('fs');
-const logger = require('../lib/logger');
+const sdk = require('../index');
 
-auth.setup(
+sdk.setup(
     'http://localhost:5555',
     'Administrator',
     'manage'
@@ -13,23 +11,30 @@ async function run() {
     const specFile = 'test/files/test.openapi.json';
     const specObject = JSON.parse(fs.readFileSync(specFile));
 
+    // Use the API name and version from the spec file
     const apiName = specObject.info.title;
     const apiVersion = specObject.info.version;
 
     let currApi;
     try{
-        const currApis = await api.findApiByNameAndVersion(apiName);
-        logger.debug(`Versions = ${currApis.length}`);
+        // Get all versions of the API
+        const currApis = await sdk.findApiByNameAndVersion(apiName);
+        console.log(`Versions = ${currApis.length}`);
 
-        currApi = currApis.find(item => item.api.apiVersion == apiVersion).api;
+        // Is there an exact match for the version?
+        currApi = currApis.find(item => item.api.apiVersion == apiVersion);
+        
         if(currApi) {
-            logger.debug(`Updating existing version ${apiVersion}`);
-            currApi = await api.updateApi(currApi.id, specFile, 'openapi');
-            logger.debug(`API last updated = ${currApi.lastModified}`);
+            currApi = currApi.api;
+            console.log(`Updating existing version ${apiVersion}`);
+            currApi = await sdk.updateApi(currApi.id, specFile, 'openapi');
+            console.log(`API last updated = ${currApi.lastModified}`);
         }
         else { 
-            logger.debug('Creating new version of existing API');
-            // TODO: implement creation and update of new version
+            console.log('Creating new version of existing API');
+            currApi = await sdk.createApiVersion(currApis[0].api.id, apiVersion);
+            currApi = await sdk.updateApi(currApi.id, specFile, 'openapi');
+            console.log(`API last updated = ${currApi.lastModified}`);
         }
     }
     catch(error) {
@@ -37,17 +42,12 @@ async function run() {
             throw error;
         }
         else {
-            // ignore, API does not exist yet
-            logger.debug('API does not exist yet');
+            // ignore error, and create a new API
+            console.log('Creating new API');
+            currApi = await sdk.createApi(specFile, 'openapi');
+            console.log(`API created = ${currApi.creationDate}`);
         }
     }
-
-    if(!currApi) {
-        currApi = await api.createApi(specFile, 'openapi');
-        console.log(JSON.stringify(currApi));
-        logger.debug(`API created = ${currApi.creationDate}`);
-    }
-
 }
 
 run();
