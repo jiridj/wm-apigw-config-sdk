@@ -1,5 +1,7 @@
 # Configuration SDK for webMethods API Gateway
 
+![coverage](https://img.shields.io/codecov/c/gh/jiridj/wm-apigw-config-sdk?token=35GE4E56NO)
+
 This SDK provides a NodeJS wrapper for the webMethods API Gateway administration and configuration APIs. It is designed to provide simple and intuitive access to wM API Gateway from within CI/CD pipelines. 
 
 ## Motivation
