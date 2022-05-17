@@ -13,6 +13,7 @@ module.exports = {
     getApiVersions: api.getApiVersions,
     getGatewayAuth: auth.getGwAuth,
     getGatewayUrl: auth.getGwUrl,
+    getSpecFile: util.getFile,
     getSpecInfo: util.getSpecInfo,
     findApiById: api.findApiById,
     findApiByNameAndVersion: api.findApiByNameAndVersion,
