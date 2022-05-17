@@ -12,6 +12,7 @@ module.exports = {
     getApiVersions: api.getApiVersions,
     getGatewayAuth: auth.getGwAuth,
     getGatewayUrl: auth.getGwUrl,
+    getSpecInfo: api.getSpecInfo,
     findApiById: api.findApiById,
     findApiByNameAndVersion: api.findApiByNameAndVersion,
     findStage: promo.findStage,
