@@ -35,6 +35,6 @@ jobs:
     needs: [ test ]
     if: github.event_name == 'push' && contains(github.ref, 'refs/tags/')
     steps:
-      - run: npm publish
+      - run: npm publish --access public
         env: 
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
