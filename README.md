@@ -129,6 +129,23 @@ const apiVersions = await sdk.getAllVersions(
 );
 ```
 
+- Get info from specification
+
+Get the API name, version and specification type from a spec file.
+
+```javascript
+const info = sdk.getSpecInfo('swagger.json');
+console.log(info);
+
+/* Output: 
+{
+    apiName: 'Swagger Petstore',
+    apiVersion: '1.0.6',
+    apiType: 'swagger'
+}
+*/
+```
+
 - Find an API by its unique ID
 
 Find an API and [all of its details](examples/api-details.json) using its unique ID. 
