@@ -41,7 +41,7 @@ jobs:
       - name: setup codeql
         uses: github/codeql-action/init@v2
         with:
-          languages: [ 'javascript' ]
+          language: javascript
       - name: build project
         uses: github/codeql-action/autobuild@v2
       - name: analyze code
