@@ -63,6 +63,61 @@ describe('test getFile', () => {
     
 });
 
+describe('test getOpenApiInfo', () => {
+
+    it('should succeed', () => {
+        const info = util.getOpenApiInfo('test/files/test.openapi.json');
+        expect(info.apiType).toBe('openapi');
+        expect(info.apiName).toBe('Swagger Petstore - OpenAPI 3.0');
+        expect(info.apiVersion).toBe('1.0.11');
+    });
+
+    it('should return undefined', () => {
+        const info = util.getOpenApiInfo('test/files/test.swagger.json');
+        expect(info).toBeUndefined();
+    });
+
+});
+
+describe('test getSpecInfo', () => {
+
+    it('should return openapi', () => {
+        const info = util.getSpecInfo('test/files/test.openapi.json');
+        expect(info.apiType).toBe('openapi');
+        expect(info.apiName).toBe('Swagger Petstore - OpenAPI 3.0');
+        expect(info.apiVersion).toBe('1.0.11');
+    });
+
+    it('should return swagger', () => {
+        const info = util.getSpecInfo('test/files/test.swagger.json');
+        expect(info.apiType).toBe('swagger');
+        expect(info.apiName).toBe('Swagger Petstore');
+        expect(info.apiVersion).toBe('1.0.6');
+    });
+
+    it('should return undefined', () => {
+        const info = util.getSpecInfo('invalidtype.xml');
+        expect(info).toBeUndefined();
+    });
+
+});
+
+describe('test getSwaggerInfo', () => {
+
+    it('should succeed', () => {
+        const info = util.getSwaggerInfo('test/files/test.swagger.json');
+        expect(info.apiType).toBe('swagger');
+        expect(info.apiName).toBe('Swagger Petstore');
+        expect(info.apiVersion).toBe('1.0.6');
+    });
+
+    it('should return undefined', () => {
+        const info = util.getSwaggerInfo('test/files/test.openapi.json');
+        expect(info).toBeUndefined();
+    });
+
+});
+
 describe('test isValidUrl', () => {
 
     it('should succeed', async () => {
@@ -91,10 +146,6 @@ describe('test isValidSpec', () => {
         expect(util.isValidSpec('test/files/test.openapi.json', 'openapi')).toBeTruthy();
     });
     
-    it('should be valid OpenAPI yaml', () => {
-        expect(util.isValidSpec('test/files/test.openapi.yaml', 'openapi')).toBeTruthy();
-    });
-
     it('should be invalid OpenAPI', () => {
         expect(util.isValidSpec('test/files/invalid.xml', 'openapi')).toBeFalsy();
     });
@@ -103,28 +154,8 @@ describe('test isValidSpec', () => {
         expect(util.isValidSpec('test/files/test.swagger.json', 'swagger')).toBeTruthy();
     });
 
-    it('should be valid Swagger yaml', () => {
-        expect(util.isValidSpec('test/files/test.swagger.yaml', 'swagger')).toBeTruthy();
-    });
-
     it('should be invalid Swagger', () => {
         expect(util.isValidSpec('test/files/invalid.xml', 'swagger')).toBeFalsy();
-    });
-
-    it('should be valid RAML', () => {
-        expect(util.isValidSpec('test/files/test.raml', 'raml')).toBeTruthy();
-    });
-
-    it('should be invalid RAML', () => {
-        expect(util.isValidSpec('test/files/invalid.xml', 'raml')).toBeFalsy();
-    });
-
-    it('should be valid WSDL', () => {
-        expect(util.isValidSpec('test/files/test.wsdl', 'wsdl')).toBeTruthy();
-    });
-
-    it('should be invalid WSDL', () => {
-        expect(util.isValidSpec('test/files/invalid.xml', 'wsdl')).toBeFalsy();
     });
 
     it('should be invalid type', () => {
