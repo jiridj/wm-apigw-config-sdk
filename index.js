@@ -1,6 +1,7 @@
 const api = require('./lib/api');
 const auth = require('./lib/auth');
 const promo = require('./lib/promotion');
+const util = require('./lib/util');
 
 // re-export public functions from sub-modules
 module.exports = {
@@ -12,7 +13,7 @@ module.exports = {
     getApiVersions: api.getApiVersions,
     getGatewayAuth: auth.getGwAuth,
     getGatewayUrl: auth.getGwUrl,
-    getSpecInfo: api.getSpecInfo,
+    getSpecInfo: util.getSpecInfo,
     findApiById: api.findApiById,
     findApiByNameAndVersion: api.findApiByNameAndVersion,
     findStage: promo.findStage,
