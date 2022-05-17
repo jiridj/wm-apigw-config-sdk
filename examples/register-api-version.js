@@ -8,8 +8,9 @@ sdk.setup(
 );
 
 async function run() {
-    const specFile = 'test/files/test.openapi.json';
-    const specObject = JSON.parse(fs.readFileSync(specFile));
+    const specFile = 'https://petstore3.swagger.io/api/v3/openapi.json';
+    const localCopy = await sdk.getSpecFile(specFile);
+    const specObject = JSON.parse(fs.readFileSync(localCopy));
 
     // Use the API name and version from the spec file
     const apiName = specObject.info.title;
@@ -27,13 +28,13 @@ async function run() {
         if(currApi) {
             currApi = currApi.api;
             console.log(`Updating existing version ${apiVersion}`);
-            currApi = await sdk.updateApi(currApi.id, specFile, 'openapi');
+            currApi = await sdk.updateApi(currApi.id, localCopy, 'openapi');
             console.log(`API last updated = ${currApi.lastModified}`);
         }
         else { 
             console.log('Creating new version of existing API');
             currApi = await sdk.createApiVersion(currApis[0].api.id, apiVersion);
-            currApi = await sdk.updateApi(currApi.id, specFile, 'openapi');
+            currApi = await sdk.updateApi(currApi.id, localCopy, 'openapi');
             console.log(`API last updated = ${currApi.lastModified}`);
         }
     }
@@ -44,10 +45,12 @@ async function run() {
         else {
             // ignore error, and create a new API
             console.log('Creating new API');
-            currApi = await sdk.createApi(specFile, 'openapi');
+            currApi = await sdk.createApi(localCopy, 'openapi');
             console.log(`API created = ${currApi.creationDate}`);
         }
     }
+
+    fs.unlinkSync(localCopy);
 }
 
 run();
