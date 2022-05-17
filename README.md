@@ -58,7 +58,7 @@ sdk.reset();
 
 The service management APIs provide you CRUD and other functions related to APIs managed by the gateway.  
 
-- Activate an API
+### Activate an API
 
 Activate an API on the gateway, making the API endpoint accessible for API consumers. The function returns the [full API details](examples/api-details.json), which includes the activation status.
 
@@ -69,7 +69,7 @@ const apiDef = await sdk.activateApi(
 );
 ```
 
-- Create an API
+### Create an API
 
 Create a new API on the gateway. The name of the API - read from the OpenAPI specification - must be unique, if not use `createApiVersion` instead. The function returns the [full API details](examples/api-details.json) of the newly created API.
 
@@ -81,7 +81,7 @@ const apiDef = await sdk.createApi(
 );
 ```
 
-- Create an API version
+### Create an API version
 
 Create a new API version. A version of the API must already exist and the combination of the name and new version must be unique. The function returns the [full API details](examples/api-details.json) of the newly created API version. 
 
@@ -96,7 +96,7 @@ const apiDef = await sdk.createApiVersion(
 )
 ```
 
-- Deactivate an API
+### Deactivate an API
 
 Deactivate an API on the gateway, making the API endpoint no longer accessible for API consumers. The function returns the [full API details](examples/api-details.json), which includes the activation status.
 
@@ -107,7 +107,7 @@ const apiDef = await sdk.deactivateApi(
 );
 ```
 
-- Delete an API
+### Delete an API
 
 Delete an API from the gateway configuration. The function returns true if the API was deleted successfully.
 
@@ -118,7 +118,7 @@ const success = await sdk.deleteApi(
 );
 ```
 
-- Get all versions of an API
+### Get all versions of an API
 
 Get all available versions of an API. Returns a [collection version information](examples/api-versions.json).
 
@@ -129,7 +129,7 @@ const apiVersions = await sdk.getAllVersions(
 );
 ```
 
-- Get info from specification
+### Get info from specification
 
 Get the API name, version and specification type from a spec file.
 
@@ -146,7 +146,7 @@ console.log(info);
 */
 ```
 
-- Get a local copy of a specification file
+### Get a local copy of a specification file
 
 Takes a file path or url and ensures a local copy is available to work with. The function returns the local file path.
 
@@ -156,7 +156,7 @@ const localCopy = sdk.getSpecFile(
 );
 ```
 
-- Find an API by its unique ID
+### Find an API by its unique ID
 
 Find an API and [all of its details](examples/api-details.json) using its unique ID. 
 
@@ -167,7 +167,7 @@ const apiDef = await sdk.findApiById(
 );
 ```
 
-- Find an API by its name (and version)
+### Find an API by its name (and version)
 
 Find all API versions for an API by its name. Optionally you can search for an exact match by also supplying the version. The function returns an [array of API objects](examples/api-versions.json). For the full details on a specific version you have to use `findApiByID`.
 
@@ -184,7 +184,7 @@ const apiVersions = await sdk.findApiByNameAndVersion(
 );
 ```
 
-- Update an API
+### Update an API
 
 Update an existing API (version) on the gateway. The function returns the [full API details](examples/api-details.json) of the updated API.
 
@@ -200,7 +200,7 @@ const apiDef = await sdk.updateApi(
 
 The promotion management APIs enable you to interact with wM API Gateway's [staging and promotion](https://documentation.softwareag.com/webmethods/compendiums/v10-5/C_API_Management/index.html#page/api-mgmt-comp%2Fco-intro_staging_promo.html%23) features. Promotion management dramatically simplifies dependency management and deployment between gateway instances in different stages of the software delivery lifecycle. 
 
-- Find a stage
+### Find a stage
 
 Find a stage and [all of its details](examples/stage-details.json). 
 
@@ -209,7 +209,7 @@ Find a stage and [all of its details](examples/stage-details.json).
 const stage = await sdk.findStage('production');
 ```
 
-- Promote an API to a stage
+### Promote an API to a stage
 
 Promotes an API, and all associated configurations (policies, applications, ...), to the given stage.
 
