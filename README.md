@@ -146,6 +146,16 @@ console.log(info);
 */
 ```
 
+- Get a local copy of a specification file
+
+Takes a file path or url and ensures a local copy is available to work with. The function returns the local file path.
+
+```javascript
+const localCopy = sdk.getSpecFile(
+    'https://petstore3.swagger.io/api/v3/openapi.json'
+);
+```
+
 - Find an API by its unique ID
 
 Find an API and [all of its details](examples/api-details.json) using its unique ID. 
