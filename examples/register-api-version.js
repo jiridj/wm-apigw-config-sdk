@@ -1,4 +1,3 @@
-const fs = require('fs');
 const sdk = require('../index');
 const logger = require('../lib/logger');
 
