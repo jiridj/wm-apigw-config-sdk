@@ -4,6 +4,7 @@
   "description": "An SDK that wraps administration and configuration APIs for webMethods API Gateway into a nodejs package.",
   "main": "index.js",
   "scripts": {
+    "prepare": "husky install",
     "lint": "eslint **/*.js",
     "test": "jest --coverage --verbose",
     "all": "npm run lint && npm test"
@@ -29,11 +30,7 @@
   },
   "devDependencies": {
     "eslint": "^8.15.0",
-    "jest": "^28.1.0",
-    "pre-commit": "^1.2.2"
-  },
-  "pre-commit": [
-    "lint",
-    "test"
-  ]
+    "husky": "^8.0.1",
+    "jest": "^28.1.0"
+  }
 }
