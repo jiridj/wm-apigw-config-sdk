@@ -2,7 +2,7 @@ const sdk = require('../index');
 const logger = require('../lib/logger');
 
 sdk.setup(
-    'http://localhost:5555',
+    'https://808b-94-226-237-228.eu.ngrok.io',
     'Administrator',
     'manage'
 );
@@ -34,7 +34,7 @@ async function registerApi(spec) {
         logger.debug('Updating specification');
         logger.debug(`API ID = ${current.id}`);
         logger.debug(`SPEC = ${localCopy}`);
-        logger.debug(`API ID = ${info.apiType}`);
+        logger.debug(`API TYPE = ${info.apiType}`);
         api = await sdk.updateApi(current.id, localCopy, info.apiType);
     }
     catch(error) {

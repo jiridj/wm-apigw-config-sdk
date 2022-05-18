@@ -12,6 +12,9 @@ pids
 *.seed
 *.pid.lock
 
+# Test files
+openapi.json
+
 # Node modules
 node_modules/
 
