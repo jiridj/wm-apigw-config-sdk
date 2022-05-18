@@ -13,16 +13,14 @@ This SDK provides a NodeJS wrapper for the webMethods API Gateway administration
 webMethods API Gateway exposes many APIs to configure it programatically. Some use cases require a single API call, while others need logic to combine the right actions. This SDK provides simple and intuitive functions that group the logic as required. 
 
 Note:
-This SDK does not cover all use cases and has only been tested with OpenAPI specifications at the moment. If you feel a particular use case is missing, feel free to submit a pull request to add it! :wink:
+This SDK does not claim to cover all use cases and has only been tested with Swagger and OpenAPI specifications. If you feel a particular use case is missing, feel free to submit a pull request to add it! :wink:
 
 ## Quick Start
 
-TL;DR? Check out the quick start examples in `./examples/`. You'll find examples there for:
+TL;DR? Check out the quick start examples in the `examples` folder. You'll find examples there for:
 
 - [Registering an API](examples/register-api-version.js) based on the OpenAPI project title and version.
 - [Promoting an API](examples/promote-api.js) with a given name to a given stage.
-
-If you feel an example is missing, feel free to submit a pull request to add it! :wink: 
 
 ## Installation
 
@@ -45,7 +43,7 @@ The configuration and administration APIs require you to authenticate with platf
 ```javascript
 // Configure the connection 
 sdk.setup(
-    'http://localhost:9072',
+    'http://localhost:5555',
     'Administrator',
     'manage'
 );
@@ -90,6 +88,7 @@ the most recent version. This function will automatically use the most
 recent version to create the new version.
 
 ```javascript
+// Create a new version based on the API with given unique ID.
 const apiDef = await sdk.createApiVersion(
     '36edf697-18f0-4de0-8b2e-dd81fc161034',
     '1.0.12'
@@ -134,6 +133,7 @@ const apiVersions = await sdk.getAllVersions(
 Get the API name, version and specification type from a spec file.
 
 ```javascript
+// Pulls name, version and type from the spec file.
 const info = sdk.getSpecInfo('swagger.json');
 console.log(info);
 
@@ -151,6 +151,12 @@ console.log(info);
 Takes a file path or url and ensures a local copy is available to work with. The function returns the local file path.
 
 ```javascript
+/* 
+Returns the path to specification file. If the file is in the repository, it provides 
+the absolute path. If the reference is a URL, it downloads the file and returns the 
+absolute path the to local copy.
+*/
+
 const localCopy = sdk.getSpecFile(
     'https://petstore3.swagger.io/api/v3/openapi.json'
 );
