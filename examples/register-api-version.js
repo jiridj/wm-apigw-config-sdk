@@ -1,5 +1,6 @@
 const fs = require('fs');
 const sdk = require('../index');
+const logger = require('../lib/logger');
 
 sdk.setup(
     'http://localhost:5555',
@@ -7,50 +8,61 @@ sdk.setup(
     'manage'
 );
 
-async function run() {
-    const specFile = 'https://petstore3.swagger.io/api/v3/openapi.json';
-    const localCopy = await sdk.getSpecFile(specFile);
-    const specObject = JSON.parse(fs.readFileSync(localCopy));
+async function registerApi(spec) {
+    logger.debug(`Fetching spec file ${spec}`);
+    const localCopy = await sdk.getSpecFile(spec);
 
-    // Use the API name and version from the spec file
-    const apiName = specObject.info.title;
-    const apiVersion = specObject.info.version;
+    const info = sdk.getSpecInfo(localCopy);
+    logger.debug(`Registering ${info.apiName} with version ${info.apiVersion}`);
 
-    let currApi;
-    try{
-        // Get all versions of the API
-        const currApis = await sdk.findApiByNameAndVersion(apiName);
-        console.log(`Versions = ${currApis.length}`);
+    let api;
+    try {
+        const versions = await sdk.findApiByNameAndVersion(info.apiName);
 
-        // Is there an exact match for the version?
-        currApi = currApis.find(item => item.api.apiVersion == apiVersion);
-        
-        if(currApi) {
-            currApi = currApi.api;
-            console.log(`Updating existing version ${apiVersion}`);
-            currApi = await sdk.updateApi(currApi.id, localCopy, 'openapi');
-            console.log(`API last updated = ${currApi.lastModified}`);
-        }
-        else { 
-            console.log('Creating new version of existing API');
-            currApi = await sdk.createApiVersion(currApis[0].api.id, apiVersion);
-            currApi = await sdk.updateApi(currApi.id, localCopy, 'openapi');
-            console.log(`API last updated = ${currApi.lastModified}`);
-        }
-    }
-    catch(error) {
-        if (!error.startsWith('Failed to find')) {
-            throw error;
+        // An error is thrown if no versions exist, so we would never get here 
+        // in that case.
+        let current = versions.find(item => item.api.apiVersion == info.apiVersion);
+        if (current) {
+            // The version already exists and only needs updating.
+            current = current.api;
         }
         else {
-            // ignore error, and create a new API
-            console.log('Creating new API');
-            currApi = await sdk.createApi(localCopy, 'openapi');
-            console.log(`API created = ${currApi.creationDate}`);
+            // The version does not exist and we have to add it.
+            logger.debug(`Adding new version ${info.apiVersion}`);
+            current = await sdk.createApiVersion(versions[0].api.id, info.apiVersion);
+        }
+
+        logger.debug('Updating specification');
+        logger.debug(`API ID = ${current.id}`);
+        logger.debug(`SPEC = ${localCopy}`);
+        logger.debug(`API ID = ${info.apiType}`);
+        api = await sdk.updateApi(current.id, localCopy, info.apiType);
+    }
+    catch(error) {
+        if (error.startsWith('Failed to find')) {
+            // The API does not exist and we have to create it.
+            logger.debug('Creating new API');
+            api = await sdk.createApi(localCopy, info.apiType);
+        }
+        else {
+            logger.error(error);
+            throw error;
         }
     }
 
-    fs.unlinkSync(localCopy);
+    return api;
+}
+
+async function run() {
+    const specFile = 'https://petstore3.swagger.io/api/v3/openapi.json';
+    
+    // register the API (version)
+    let api = await registerApi(specFile);
+
+    // activate the API
+    api = await sdk.activateApi(api.id);
+
+    logger.debug(`Activated: ${api.isActive}`);
 }
 
 run();

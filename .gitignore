@@ -1,6 +1,6 @@
 # VS Code settings
 .vscode/
-thunder_tests/
+thunder-tests/
 
 # Logs
 logs
