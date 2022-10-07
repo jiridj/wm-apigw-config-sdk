@@ -24,7 +24,7 @@
   },
   "homepage": "https://github.com/jiridj/wm-apigw-config-sdk#readme",
   "dependencies": {
-    "axios": "^0.27.2",
+    "axios": "^1.1.0",
     "moment": "^2.29.4",
     "winston": "^3.8.2"
   },
