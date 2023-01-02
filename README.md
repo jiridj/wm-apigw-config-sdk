@@ -1,6 +1,6 @@
 # Configuration SDK for webMethods API Gateway
 
-![build](https://img.shields.io/github/workflow/status/jiridj/wm-apigw-config-sdk/ci)
+![build](https://img.shields.io/github/workflow/status/jiridj/wm-apigw-config-sdk/ci.yml)
 ![coverage](https://img.shields.io/codecov/c/gh/jiridj/wm-apigw-config-sdk?token=35GE4E56NO)
 ![vulnerabilities](https://img.shields.io/snyk/vulnerabilities/github/jiridj/wm-apigw-config-sdk)
 [![open issues](https://img.shields.io/github/issues-raw/jiridj/wm-apigw-config-sdk)](https://github.com/jiridj/wm-apigw-config-sdk/issues)
